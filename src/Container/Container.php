@@ -1,22 +1,22 @@
 <?php
 
-namespace frostealth\Locator;
+namespace frostealth\Container;
 
 use frostealth\Storage\Data;
 
 /**
- * Class Locator
+ * Class Container
  *
- * @package frostealth\Locator
+ * @package frostealth\Container
  */
-class Locator
+class Container
 {
     /** @var Data */
-    protected $container;
+    protected $storage;
 
     public function __construct()
     {
-        $this->container = new Data();
+        $this->storage = new Data();
     }
 
     /**
@@ -26,7 +26,7 @@ class Locator
      */
     public function get($name)
     {
-        $value = $this->container->get($name);
+        $value = $this->storage->get($name);
         if (is_callable($value)) {
             $value = $value($this);
         }
@@ -40,7 +40,7 @@ class Locator
      */
     public function set($name, $value)
     {
-        $this->container->set($name, $value);
+        $this->storage->set($name, $value);
     }
 
     /**
@@ -50,7 +50,7 @@ class Locator
      */
     public function has($name)
     {
-        return $this->container->has($name);
+        return $this->storage->has($name);
     }
 
     /**
@@ -58,20 +58,20 @@ class Locator
      */
     public function remove($name)
     {
-        $this->container->remove($name);
+        $this->storage->remove($name);
     }
 
     /**
      * @param string $name
-     * @param callable $value
+     * @param callable $callable
      */
-    public function singleton($name, \Closure $value)
+    public function singleton($name, \Closure $callable)
     {
-        $this->container->set($name, function () use ($value) {
+        $this->storage->set($name, function () use ($callable) {
             static $instance = null;
 
             if ($instance === null) {
-                $instance = $value($this);
+                $instance = $callable($this);
             }
 
             return $instance;

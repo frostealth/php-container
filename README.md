@@ -1,4 +1,4 @@
-PHP Resource Locator
+PHP Container
 ====================
 
 Example
@@ -6,44 +6,39 @@ Example
 ```php
 <?php
 
-use frostealth\Locator\Locator;
+use frostealth\Container\Container;
 
-$locator = new Locator();
+$container = new Container();
 
 // ...
 
 // injecting simple values
-$locator->set('foo', 'bar'); // or $locator->foo = 'bar';
+$container->set('foo', 'bar'); // or $container->foo = 'bar';
 
 // get its value
-$value = $locator->get('foo');  // or $value = $locator->foo;
+$value = $container->get('foo');  // or $value = $container->foo;
 
 // ...
 
 // resources 
-$locator->set('object', function ($locator) {
-    return new MyObject($locator->foo);
+$container->set('object', function ($container) {
+    return new MyObject($container->foo);
 });
 
 // get a new instance
-$object = $locator->get('object');
+$object = $container->get('object');
 
 // ...
 
 // singleton resources
-$locator->singleton('log', function ($locator) {
-    return new MyLog($locator->object);
+$container->singleton('log', function ($container) {
+    return new MyLog($container->object);
 });
 
 // get log resource
-$log = $locator->get('log');
+$log = $container->get('log');
 ```
-
-Note
-----
-[Use Locator as singleton](https://github.com/frostealth/php-singleton-trait)
 
 Requirements
 ------------
 * PHP >= 5.4
-* [PHP Data Storage v1.0](https://github.com/frostealth/php-data-storage/releases)
