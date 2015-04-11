@@ -28,7 +28,7 @@ class Container
     {
         $value = $this->storage->get($name);
         if (is_callable($value)) {
-            $value = $value($this);
+            $value = call_user_func($value, $this);
         }
 
         return $value;
@@ -65,13 +65,13 @@ class Container
      * @param string $name
      * @param callable $callable
      */
-    public function singleton($name, \Closure $callable)
+    public function singleton($name, callable $callable)
     {
         $this->storage->set($name, function () use ($callable) {
             static $instance = null;
 
             if ($instance === null) {
-                $instance = $callable($this);
+                $instance = call_user_func($callable, $this);
             }
 
             return $instance;

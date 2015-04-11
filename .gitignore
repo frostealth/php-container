@@ -8,5 +8,4 @@ thumbs.db
 .settings
 .idea
 composer.lock
-composer.phar
 vendor/*
