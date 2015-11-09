@@ -1,11 +1,10 @@
-PHP Container
-====================
+# PHP Container
 
-Example
--------
+Simple Dependency Injection Container.
+
+## Usage
+
 ```php
-<?php
-
 use frostealth\Container\Container;
 
 $container = new Container();
@@ -39,6 +38,28 @@ $container->singleton('log', function ($container) {
 $log = $container->get('log');
 ```
 
-Requirements
-------------
+## Dependency Injection
+
+```php
+use Interop\Container\ContainerInterface;
+
+class MyClass
+{
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+}
+```
+
+## Requirements
+
 * PHP >= 5.4

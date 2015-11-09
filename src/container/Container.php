@@ -1,22 +1,38 @@
 <?php
 
-namespace frostealth\Container;
+namespace frostealth\container;
 
-use frostealth\Storage\Data;
+use frostealth\container\exceptions\ContainerException;
+use frostealth\storage\Data;
+use frostealth\storage\DataInterface;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class Container
  *
- * @package frostealth\Container
+ * @package frostealth\container
  */
-class Container
+class Container implements ContainerInterface
 {
-    /** @var Data */
+    /**
+     * @var DataInterface
+     */
     protected $storage;
 
-    public function __construct()
+    /**
+     * @param array|DataInterface $values
+     */
+    public function __construct($values = [])
     {
-        $this->storage = new Data();
+        if (is_array($values)) {
+            $values = new Data($values);
+        }
+
+        if (!$values instanceof DataInterface) {
+            throw new ContainerException('Expected a DataInterface');
+        }
+
+        $this->storage = $values;
     }
 
     /**
@@ -36,7 +52,7 @@ class Container
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function set($name, $value)
     {
@@ -62,7 +78,9 @@ class Container
     }
 
     /**
-     * @param string $name
+     * Ensure a value or object will remain globally unique
+     *
+     * @param string   $name
      * @param callable $callable
      */
     public function singleton($name, callable $callable)
@@ -79,6 +97,19 @@ class Container
     }
 
     /**
+     * Protect closure from being directly invoked
+     *
+     * @param string   $name
+     * @param callable $callable
+     */
+    public function protect($name, callable $callable)
+    {
+        $this->storage->set($name, function () use ($callable) {
+            return $callable;
+        });
+    }
+
+    /**
      * @param string $name
      *
      * @return mixed
@@ -90,7 +121,7 @@ class Container
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set($name, $value)
     {

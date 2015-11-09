@@ -1,13 +1,9 @@
 <?php
 
-namespace frostealth\Tests\Container;
-
-use frostealth\Container\Container;
+use frostealth\container\Container;
 
 /**
  * Class ContainerTest
- *
- * @package frostealth\Tests\Container
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
