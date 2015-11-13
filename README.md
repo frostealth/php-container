@@ -2,6 +2,14 @@
 
 Simple Dependency Injection Container.
 
+## Installation
+
+Run the [Composer](http://getcomposer.org/download/) command to install the latest stable version:
+
+```
+composer require frostealth/php-container @stable
+```
+
 ## Usage
 
 ```php
@@ -60,6 +68,7 @@ class MyClass
 }
 ```
 
-## Requirements
+## License
 
-* PHP >= 5.4
+The MIT License (MIT).
+See [LICENSE.md](https://github.com/frostealth/php-container/blob/master/LICENSE.md) for more information.
